@@ -3,9 +3,6 @@
 <%@ Register assembly="DevExpress.Web.v17.1, Version=17.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
 
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,7 +10,44 @@
     <title></title>
     <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
 
-    <script charset="UTF-8" type="text/javascript">
+   
+    <style type="text/css">
+      /* Define a style used for infoboxes */
+      .infobox 
+      {
+       position: absolute;
+       /*border: solid 2px black;*/
+       background-color: White;
+       z-index: 1000;
+       padding: 2px;
+       /*width: 180px;*/
+      }
+        .style1
+        {
+            width: 100%;
+        }
+        .style4
+        {
+            font-size: 8pt;
+            text-align: right;
+        }
+        .style5
+        {
+            color: #336699;
+            font-family: Tahoma;
+        }
+        .style8
+        {
+            color: #FF9900;
+            font-size: small;
+        }
+     </style>
+</head>
+<body  onload="onLoadSystems()">
+    <script language="javascript" type="text/javascript" src="<%=ResolveClientUrl("~/Scripts/JScriptFunctions.js") %>"></script>
+
+
+     <script charset="UTF-8" type="text/javascript">
         var systemsmap = null;
         var thearray = null;
 
@@ -22,6 +56,18 @@
                 window.onresize = windowresized;
             }
             InitMap();
+             // Extend the Pushpin class to add an InfoBox object
+            Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
+            if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
+                this.removeInfoBox();
+            }
+            // Assign the infobox to this pushpin
+            this.infoBox = infoBox;
+
+            // Add handlers for mouse events
+            this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); } );
+            this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); } );
+            }
         }
 
         function windowresized() {
@@ -87,56 +133,8 @@
                 this.div.style.visibility = "hidden";
         };
 
-        // Extend the Pushpin class to add an InfoBox object
-        Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
-            if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
-                this.removeInfoBox();
-            }
-            // Assign the infobox to this pushpin
-            this.infoBox = infoBox;
-
-            // Add handlers for mouse events
-            this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); }
-   );
-            this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); }
-   );
-        }
-
     </script>
-    <style type="text/css">
-      /* Define a style used for infoboxes */
-      .infobox 
-      {
-       position: absolute;
-       /*border: solid 2px black;*/
-       background-color: White;
-       z-index: 1000;
-       padding: 2px;
-       /*width: 180px;*/
-      }
-        .style1
-        {
-            width: 100%;
-        }
-        .style4
-        {
-            font-size: 8pt;
-            text-align: right;
-        }
-        .style5
-        {
-            color: #336699;
-            font-family: Tahoma;
-        }
-        .style8
-        {
-            color: #FF9900;
-            font-size: small;
-        }
-     </style>
-</head>
-<body  onload="onLoadSystems()">
-    <script language="javascript" type="text/javascript" src="<%=ResolveClientUrl("~/Scripts/JScriptFunctions.js") %>"></script>
+
     <form id="form1" runat="server">
 
         <table class="style1" style="padding-bottom: 8px">
@@ -178,15 +176,18 @@
 }" />
 <ClientSideEvents CallbackComplete="function(s, e) {
 	thearray = e.result.split('/');
+    debugger;
     systemsmap.entities.clear();
     for (var i = 0; i &lt; thearray.length; i++)
         { 
             var  innerarray = thearray[i].split(';');
             var latitude = innerarray[0];
             var longitude = innerarray[1];
-            var pin= new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude), {icon: 'bullet-blue-icon.png', width:32, height:32, anchor: new Microsoft.Maps.Point(16, 16)});
-            AddInfoBox(pin, innerarray[2], innerarray[4]);
-            systemsmap.entities.push(pin);
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+                var pin= new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude), {icon: 'bullet-blue-icon.png', width:32, height:32, anchor: new Microsoft.Maps.Point(16, 16)});
+                AddInfoBox(pin, innerarray[2], innerarray[4]);
+                systemsmap.entities.push(pin);
+            }
         }     
 }"></ClientSideEvents>
     </dx:ASPxCallback>
