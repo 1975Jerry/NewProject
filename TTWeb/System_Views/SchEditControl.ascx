@@ -765,7 +765,7 @@ if (ToTeam.GetIsValid() &amp;&amp; ToTeam.GetSelectedItem().text == &quot;Dispat
                                                                 <Columns>
                                                                     <dx:GridViewCommandColumn ButtonType="Image" Name="CommandButtons" ShowInCustomizationForm="True" VisibleIndex="0" Width="60px" Caption=" " ShowEditButton="True" ShowClearFilterButton="True"/>
                                                                     <dx:GridViewDataTextColumn Caption="Location" FieldName="Location" 
-                                                                        Name="Location" ShowInCustomizationForm="True" VisibleIndex="2" 
+                                                                        Name="Location" ShowInCustomizationForm="True" VisibleIndex="1" 
                                                                         ReadOnly="True" Width="200px">
                                                                         <PropertiesTextEdit ClientInstanceName="SeverityText">
                                                                             <ReadOnlyStyle BackColor="WhiteSmoke">
@@ -781,7 +781,7 @@ if (ToTeam.GetIsValid() &amp;&amp; ToTeam.GetSelectedItem().text == &quot;Dispat
                                                                         VisibleIndex="24">
                                                                     </dx:GridViewDataTextColumn>
                                                                     <dx:GridViewDataTextColumn Caption="Priority" FieldName="Priority" 
-                                                                        Name="Priority" ShowInCustomizationForm="True" VisibleIndex="24" 
+                                                                        Name="Priority" ShowInCustomizationForm="True" VisibleIndex="25" 
                                                                         Visible="False">
                                                                     </dx:GridViewDataTextColumn>
                                                                     <dx:GridViewDataComboBoxColumn Caption="Site type" FieldName="SITE_TYPE" 
@@ -842,19 +842,20 @@ if (ToTeam.GetIsValid() &amp;&amp; ToTeam.GetSelectedItem().text == &quot;Dispat
                                                                     <dx:GridViewDataTextColumn Caption="SOLVED" FieldName="SOLVED" Name="SOLVED" 
                                                                         ShowInCustomizationForm="True" Visible="False" VisibleIndex="23">
                                                                     </dx:GridViewDataTextColumn>
+                                                                    <dx:GridViewDataCheckColumn Caption="4x4" FieldName="FOUR_WHEEL" Name="FOUR_WHEEL" ShowInCustomizationForm="True" VisibleIndex="10" Width="30px">
+                                                                    </dx:GridViewDataCheckColumn>
                                                                     <dx:GridViewDataComboBoxColumn Caption="Visit?" FieldName="VISIT" Name="VISIT" 
-                                                                        ShowInCustomizationForm="True" VisibleIndex="4" Width="50px">
+                                                                        ShowInCustomizationForm="True" VisibleIndex="2" Width="150px">
                                                                         <PropertiesComboBox>
                                                                             <Items>
                                                                                 <dx:ListEditItem Text="Yes" Value="Yes" />
-                                                                                <dx:ListEditItem Text="No" Value="No" />
+                                                                                <dx:ListEditItem Text="No - Site Survey Fault" Value="No - Site Survey Fault" />
+                                                                                <dx:ListEditItem Text="No - Time Lack" Value="No - Time Lack" />
                                                                             </Items>
                                                                         </PropertiesComboBox>
                                                                         <CellStyle Font-Bold="True" ForeColor="#3366CC">
                                                                         </CellStyle>
                                                                     </dx:GridViewDataComboBoxColumn>
-                                                                    <dx:GridViewDataCheckColumn Caption="4x4" FieldName="FOUR_WHEEL" Name="FOUR_WHEEL" ShowInCustomizationForm="True" VisibleIndex="10" Width="30px">
-                                                                    </dx:GridViewDataCheckColumn>
                                                                 </Columns>
                                                                 <SettingsBehavior AllowGroup="False" 
                                                                     ColumnResizeMode="NextColumn" ConfirmDelete="True" AllowFocusedRow="True" 
@@ -929,8 +930,10 @@ if (ToTeam.GetIsValid() &amp;&amp; ToTeam.GetSelectedItem().text == &quot;Dispat
                                                                                                 <PropertiesComboBox>
                                                                                                     <Items>
                                                                                                         <dx:ListEditItem Text="Yes" Value="Yes" />
-                                                                                                        <dx:ListEditItem Text="No" Value="No" />
-                                                                                                        <dx:ListEditItem Text="Partially" Value="Partially" />
+                                                                                                        <dx:ListEditItem Text="No - Site Survey Fault" Value="No - Site Survey Fault" />
+                                                                                                        <dx:ListEditItem Text="No - Hardware/Part Fault" Value="No - Hardware/Part Fault" />
+                                                                                                        <dx:ListEditItem Text="No - 3rd Party Fault (OTE etc)" Value="No - 3rd Party Fault (OTE etc)" />
+                                                                                                        <dx:ListEditItem Text="No - Time Lack" Value="No - Time Lack" />
                                                                                                     </Items>
                                                                                                 </PropertiesComboBox>
                                                                                                 <EditCellStyle Font-Size="8pt">
