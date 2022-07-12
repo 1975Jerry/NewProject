@@ -1,4 +1,5 @@
-
+*.dll
+*.xml
 .vs/config/applicationhost.config
 
 .vs/RouteWeb/v15/.suo
