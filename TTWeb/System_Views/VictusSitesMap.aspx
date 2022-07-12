@@ -131,7 +131,14 @@
         InfoBox.prototype.hide = function (e) {
             if (this.div != undefined)
                 this.div.style.visibility = "hidden";
-        };
+         };
+
+        function isNumeric(n)
+        {
+            var n2 = n;
+            n = parseFloat(n);
+            return (n!='NaN' && n2==n);
+         };
 
     </script>
 
@@ -183,7 +190,8 @@
             var  innerarray = thearray[i].split(';');
             var latitude = innerarray[0];
             var longitude = innerarray[1];
-            if (!isNaN(latitude) && !isNaN(longitude)) {
+            if (!isNaN(latitude) && !isNaN(longitude)) 
+            {
                 var pin= new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude), {icon: 'bullet-blue-icon.png', width:32, height:32, anchor: new Microsoft.Maps.Point(16, 16)});
                 AddInfoBox(pin, innerarray[2], innerarray[4]);
                 systemsmap.entities.push(pin);
