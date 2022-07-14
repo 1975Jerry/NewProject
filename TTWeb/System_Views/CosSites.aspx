@@ -43,6 +43,20 @@
             if (systemsmap == null) {
                 systemsmap = new Microsoft.Maps.Map(container, { credentials: 'An9eDuIsRVmZAKSD_iLrr4RMqqbK30ssMOwnBG_SEGBEp5MVLySR_diMHPsvAJ-h', center: new Microsoft.Maps.Location(38.333, 24.020202), mapTypeId: Microsoft.Maps.MapTypeId.auto, zoom: 7 });
             }
+
+
+            // Extend the Pushpin class to add an InfoBox object
+            Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
+                if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
+                    this.removeInfoBox();
+                }
+                // Assign the infobox to this pushpin
+                this.infoBox = infoBox;
+
+                // Add handlers for mouse events
+                this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); } );
+                this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); } );
+            }
         }
 
         /***************************************************************/
@@ -80,21 +94,6 @@
             if (this.div != undefined)
                 this.div.style.visibility = "hidden";
         };
-
-        // Extend the Pushpin class to add an InfoBox object
-        Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
-            if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
-                this.removeInfoBox();
-            }
-            // Assign the infobox to this pushpin
-            this.infoBox = infoBox;
-
-            // Add handlers for mouse events
-            this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); }
-   );
-            this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); }
-   );
-        }
 
     </script>
     <style type="text/css">
@@ -550,6 +549,9 @@
         </ContentStyle>
         <ClientSideEvents Shown="function(s, e) {
         InitMap();
+
+
+
         systemsmap.entities.clear();
         var coordstring = window.Coordinates;
         if (typeof(coordstring) != 'undefined' && coordstring!=null)
@@ -557,10 +559,13 @@
             var coords = coordstring.split(&quot;;&quot;);            
             var latitude = coords[0];
             var longitude = coords[1];
-            var pin = new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude));
-            AddInfoBox(pin, coords[2], coords[3]);
-            systemsmap.entities.push(pin);
-            systemsmap.setView({center:new Microsoft.Maps.Location(latitude, longitude)});
+            if (!isNaN(latitude) && !isNaN(longitude)) 
+            {
+                var pin = new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude));
+                AddInfoBox(pin, coords[2], coords[3]);
+                systemsmap.entities.push(pin);
+                systemsmap.setView({center:new Microsoft.Maps.Location(latitude, longitude)});
+            }
         }
 
 }" />

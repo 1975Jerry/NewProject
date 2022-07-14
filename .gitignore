@@ -83,3 +83,9 @@ TTWeb/Reporting/DailyProgram_Dat.Designer.cs
 TTWeb/Reporting/Expenses_Dat.Designer.cs
 
 TTWeb/Web.config
+
+TTWeb/obj/Debug/
+
+TTWeb/bin/
+
+.vs/RouteWeb/v16/.suo

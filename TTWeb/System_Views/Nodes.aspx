@@ -79,21 +79,6 @@
                 this.div.style.visibility = "hidden";
         };
 
-        // Extend the Pushpin class to add an InfoBox object
-        Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
-            if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
-                this.removeInfoBox();
-            }
-            // Assign the infobox to this pushpin
-            this.infoBox = infoBox;
-
-            // Add handlers for mouse events
-            this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); }
-   );
-            this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); }
-   );
-        }
-
     </script>
     <style type="text/css">
         .style1
@@ -474,9 +459,6 @@
         VisibleIndex="25">
     </dx:GridViewDataTextColumn>
 
-            
-
-
     <dx:GridViewDataTextColumn Caption="LATITUDE" FieldName="LATITUDE" 
         Name="LATITUDE" ShowInCustomizationForm="True" Visible="False" 
         VisibleIndex="10">
@@ -485,9 +467,6 @@
         Name="LONGITUDE" ShowInCustomizationForm="True" Visible="False" 
         VisibleIndex="9">
     </dx:GridViewDataTextColumn>
-
-            
-
 
     <dx:GridViewDataCheckColumn Caption="Coord/s" FieldName="Coord" Name="Coord" 
         ShowInCustomizationForm="True" VisibleIndex="8" Width="70px">
@@ -1145,6 +1124,21 @@
         </ContentStyle>
         <ClientSideEvents Shown="function(s, e) {
         InitMap();
+
+        // Extend the Pushpin class to add an InfoBox object
+        Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) 
+        {
+            if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) 
+            {
+                this.removeInfoBox();
+            }
+            // Assign the infobox to this pushpin
+            this.infoBox = infoBox;
+                
+            // Add handlers for mouse events
+            this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); }); 
+            this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); } );
+        }
         systemsmap.entities.clear();
         var coordstring = window.Coordinates;
         if (typeof(coordstring) != 'undefined')
@@ -1152,10 +1146,13 @@
             var coords = coordstring.split(&quot;;&quot;);            
             var latitude = coords[0];
             var longitude = coords[1];
-            var pin = new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude));
-            AddInfoBox(pin, coords[2], coords[3]);
-            systemsmap.entities.push(pin);
-            systemsmap.setView({center:new Microsoft.Maps.Location(latitude, longitude)});
+            if (!isNaN(latitude) && !isNaN(longitude)) 
+            {
+                var pin = new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude));
+                AddInfoBox(pin, coords[2], coords[3]);
+                systemsmap.entities.push(pin);
+                systemsmap.setView({center:new Microsoft.Maps.Location(latitude, longitude)});
+            }
         }
 
 }" />

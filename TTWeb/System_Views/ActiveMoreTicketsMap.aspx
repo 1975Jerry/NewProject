@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ActiveMoreTicketsMap.aspx.cs" Inherits="TTWeb.System_Views.ActiveMoreTicketsMap" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ActiveMoreTicketsMap.aspx.cs" Inherits="TTWeb.System_Views.ActiveMoreTicketsMap" %>
 
 <%@ Register assembly="DevExpress.Web.v17.1, Version=17.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
@@ -26,6 +26,19 @@
                 window.onresize = windowresized;
             }
             InitMap();
+
+            // Extend the Pushpin class to add an InfoBox object
+            Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
+                if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
+                    this.removeInfoBox();
+                }
+                // Assign the infobox to this pushpin
+                this.infoBox = infoBox;
+
+                // Add handlers for mouse events
+                this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); } );
+                this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); } );
+            }
         }
 
         function windowresized() {
@@ -58,14 +71,6 @@
         /***************************************************************/
         /* Add support for pop-up info boxes.
         /***************************************************************/
-
-        // InfoBox class
-        function InfoBox(html) {
-            this.div;  // Container div element
-            this.html = html; // HTML to display inside the infobox 
-        }
-
-        // Add the infobox div to the page
         InfoBox.prototype.show = function (e) {
             if (this.div == undefined) {
                 // Create the container div.
@@ -84,6 +89,11 @@
             this.div.style.top = pinLocation.y + "px";
             this.div.style.visibility = "visible";
         };
+        // InfoBox class
+        function InfoBox(html) {
+            this.div;  // Container div element
+            this.html = html; // HTML to display inside the infobox 
+        }
 
         // Hide the infobox
         InfoBox.prototype.hide = function (e) {
@@ -91,20 +101,7 @@
                 this.div.style.visibility = "hidden";
         };
 
-        // Extend the Pushpin class to add an InfoBox object
-        Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
-            if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
-                this.removeInfoBox();
-            }
-            // Assign the infobox to this pushpin
-            this.infoBox = infoBox;
-
-            // Add handlers for mouse events
-            this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); }
-   );
-            this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); }
-   );
-        }
+        
 
     </script>
     <style type="text/css">
@@ -285,9 +282,12 @@
             var  innerarray = thearray[i].split(';');
             var latitude = innerarray[0];
             var longitude = innerarray[1];
-            var pin= new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude), {icon: 'bullet-purple-icon.png', width:32, height:32, anchor: new Microsoft.Maps.Point(16, 16)});
-            AddInfoBox(pin, innerarray[2], innerarray[4]);
-            systemsmap.entities.push(pin);
+            if (!isNaN(latitude) && !isNaN(longitude)) 
+            {
+                var pin= new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude), {icon: 'bullet-purple-icon.png', width:32, height:32, anchor: new Microsoft.Maps.Point(16, 16)});
+                AddInfoBox(pin, innerarray[2], innerarray[4]);
+                systemsmap.entities.push(pin);
+            }
         }     
 }"></ClientSideEvents>
     </dx:ASPxCallback>

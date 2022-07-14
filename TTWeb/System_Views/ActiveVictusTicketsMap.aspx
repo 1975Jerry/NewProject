@@ -5,10 +5,6 @@
 
 
 
-
-
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -25,6 +21,19 @@
                 window.onresize = windowresized;
             }
             InitMap();
+
+            // Extend the Pushpin class to add an InfoBox object
+            Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
+                if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
+                    this.removeInfoBox();
+                }
+                // Assign the infobox to this pushpin
+                this.infoBox = infoBox;
+
+                // Add handlers for mouse events
+                this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); } );
+                this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); } );
+            }
         }
 
         function windowresized() {
@@ -90,20 +99,6 @@
                 this.div.style.visibility = "hidden";
         };
 
-        // Extend the Pushpin class to add an InfoBox object
-        Microsoft.Maps.Pushpin.prototype.setInfoBox = function (infoBox) {
-            if (typeof this.infoBox != undefined && this.infoBox != undefined && this.infoBox != null) {
-                this.removeInfoBox();
-            }
-            // Assign the infobox to this pushpin
-            this.infoBox = infoBox;
-
-            // Add handlers for mouse events
-            this.mouseoverHandler = Microsoft.Maps.Events.addHandler(this, 'mouseover', function (e) { infoBox.show(e); }
-   );
-            this.mouseoutHander = Microsoft.Maps.Events.addHandler(this, 'mouseout', function (e) { infoBox.hide(e); }
-   );
-        }
 
     </script>
     <style type="text/css">
@@ -324,9 +319,12 @@
             var  innerarray = thearray[i].split(';');
             var latitude = innerarray[0];
             var longitude = innerarray[1];
-            var pin= new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude), {icon: 'bullet-red-icon.png', width:32, height:32, anchor: new Microsoft.Maps.Point(16, 16)});
-            AddInfoBox(pin, innerarray[2], innerarray[4]);
-            systemsmap.entities.push(pin);
+            if (!isNaN(latitude) && !isNaN(longitude)) 
+            {
+                var pin= new  Microsoft.Maps.Pushpin( new Microsoft.Maps.Location(latitude, longitude), {icon: 'bullet-red-icon.png', width:32, height:32, anchor: new Microsoft.Maps.Point(16, 16)});
+                AddInfoBox(pin, innerarray[2], innerarray[4]);
+                systemsmap.entities.push(pin);
+            }
         }     
 }"></ClientSideEvents>
     </dx:ASPxCallback>
