@@ -45,7 +45,7 @@
         }
 
         function InitMap() {
-            debugger;
+            
             var myWidth = document.documentElement.clientWidth - 20;
             var myHeight = document.documentElement.clientHeight - 20;
             var container = document.getElementById('systemmapdiv');

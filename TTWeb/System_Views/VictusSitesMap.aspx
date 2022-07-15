@@ -183,7 +183,6 @@
 }" />
 <ClientSideEvents CallbackComplete="function(s, e) {
 	thearray = e.result.split('/');
-    debugger;
     systemsmap.entities.clear();
     for (var i = 0; i &lt; thearray.length; i++)
         { 

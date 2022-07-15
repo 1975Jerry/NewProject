@@ -284,7 +284,7 @@ namespace TTWeb
         {
             if (e.RowType == GridViewRowType.Data)
             {
-                ASPxImage mButton = ASPxGridViewVictusSites.FindRowCellTemplateControl(e.VisibleIndex, ASPxGridViewVictusSites.Columns[10] as GridViewDataColumn, "mapbutton") as ASPxImage;
+                ASPxImage mButton = ASPxGridViewVictusSites.FindRowCellTemplateControl(e.VisibleIndex, ASPxGridViewVictusSites.Columns[9] as GridViewDataColumn, "mapbutton") as ASPxImage;
                 if (mButton != null)
                 {
                     mButton.CustomJSProperties += new DevExpress.Web.CustomJSPropertiesEventHandler(VictusSites_CustomJSProperties);
